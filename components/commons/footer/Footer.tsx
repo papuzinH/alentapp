@@ -1,7 +1,7 @@
 // components/Footer.tsx
 import React from "react";
 import { View } from "react-native";
-import ItemFooter from "@/components/ItemFooter";
+import ItemFooter from "@/components/commons/footer/ItemFooter";
 import { useRouter } from "expo-router";
 
 const Footer: React.FC = () => {
