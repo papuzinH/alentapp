@@ -34,7 +34,7 @@ const Header: React.FC = () => {
 				paddingTop: 40,
 				paddingBottom: 20,
 			}}>
-			<Text style={styles.heading1}>{getTitle()}</Text>
+			<Text style={styles.heading_title}>{getTitle()}</Text>
 		</View>
 	);
 };
