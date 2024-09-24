@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 interface FooterProps {
 	icon: string;
 	text: string;
+	url: string;
 	onPress: () => void;
 }
 
