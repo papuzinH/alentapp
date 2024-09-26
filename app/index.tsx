@@ -2,7 +2,7 @@
 import { View, Text} from 'react-native';
 
 
-import ButtonPrimary from '@/components/ButtonPrimary';
+import ButtonPrimary from '@/components/commons/ButtonPrimary';
 
 export default function Home() {
 

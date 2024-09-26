@@ -10,17 +10,27 @@ const styles = StyleSheet.create({
 
     heading_primary: {
         color: "#2699FB",
-        fontSize: 25,
-        textTransform: "uppercase",
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+
+    heading_secondary: {
+        color: "#2699FB",
+        fontSize: 14,
         fontWeight: "bold",
     },
 
     heading_tertiary: {
         color: "#2699FB",
-        fontSize: 16,
+        fontSize: 10,
         textTransform: "uppercase",
         fontWeight: "bold",
     },
+
+    heading_subtitle: {
+        color: "#2699FB",
+        fontSize: 14,
+    }
 
 });
 

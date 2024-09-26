@@ -8,9 +8,11 @@ export default function Layout() {
 	return (
 		<View style={styles.container}>
 			<Header />
-			<Stack initialRouteName="Home" screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="index" options={{ title: "Home" }} />
-			</Stack>
+			<View style={{ flex: 1, padding: 20 }}>
+				<Stack initialRouteName="Home" screenOptions={{ headerShown: false }}>
+					<Stack.Screen name="index" options={{ title: "Home" }} />
+				</Stack>
+			</View>
 			<Footer />
 		</View>
 	);
@@ -19,6 +21,6 @@ export default function Layout() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: 'space-between',
-	}
+		justifyContent: "space-between",
+	},
 });
