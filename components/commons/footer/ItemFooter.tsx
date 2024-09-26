@@ -6,7 +6,6 @@ import styles from "./FooterStyles";
 interface FooterProps {
 	icon: string;
 	text: string;
-	url: string;
 	onPress: () => void;
 }
 

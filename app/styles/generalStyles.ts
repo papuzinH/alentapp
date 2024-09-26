@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     heading_title: {
         color: "#2699FB",
-        fontSize: 20,
+        fontSize: 14,
         textTransform: "uppercase",
         fontWeight: "bold",
     },
