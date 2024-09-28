@@ -4,9 +4,8 @@ import styles from "@/app/styles/generalStyles";
 import { useSegments } from "expo-router";
 
 const Header: React.FC = () => {
-
-    const segments = useSegments();
-    const routeName:string = segments[segments.length - 1];
+	const segments = useSegments();
+	const routeName: string = segments[segments.length - 1];
 
 	// Determinar el título según la ruta actual
 	const getTitle = () => {
@@ -21,11 +20,13 @@ const Header: React.FC = () => {
 				return "Tienda";
 			case "config":
 				return "Ajustes";
+			case "partido":
+				return "Partido";
 			default:
 				return "Página";
 		}
 	};
-	
+
 	return (
 		<View
 			style={{
