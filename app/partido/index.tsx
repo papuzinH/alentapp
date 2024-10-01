@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import ButtonPrimary from "@/components/commons/ButtonPrimary";
-import Icon from "react-native-vector-icons/MaterialIcons";
 
 import CounterPartido from "@/components/counterPartido/CounterPartido";
 import ValidatePresencia from "@/components/validatePresencia/ValidatePresencia";
-import styles from "@/app/styles/generalStyles";
+import { useRouter, Href } from "expo-router";
 
 const Partido = () => {
 	const [isValidate, setIsValidate] = useState(false);
 	const [validating, setValidating] = useState(false);
 	const [partidoStarted, setPartidoStarted] = useState(true);
+	const router = useRouter();
+
+	const navigate = (route: string) => {
+		router.push(route as Href);
+	};
 
 	const startValidating = () => {
 		setValidating(true);
@@ -67,12 +71,12 @@ const Partido = () => {
 					partidoStarted && (
 						<ButtonPrimary
 							title="Ir al Partido"
-							onPress={() => {}}
+							onPress={() => {
+								navigate("partido/live");
+							}}
 						/>
 					)
 				)}
-				{/* <ButtonPrimary title="Cancelar" onPress={() => {}} type="secondary" /> */}
-				{/* <ButtonPrimary title="Confirmar" onPress={() => {}} />  */}
 			</View>
 		</View>
 	);
