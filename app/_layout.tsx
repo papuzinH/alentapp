@@ -8,7 +8,7 @@ export default function Layout() {
 	return (
 		<View style={styles.container}>
 			<Header />
-			<View style={{ flex: 1, padding: 20, paddingBottom: 50 }}>
+			<View style={{ flex: 1, padding: 20, paddingBottom: 0 }}>
 				<Stack initialRouteName="Inicio" screenOptions={{ headerShown: false }}>
 					<Stack.Screen name="index" options={{ title: "Inicio" }} />
 				</Stack>
