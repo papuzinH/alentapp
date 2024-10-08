@@ -15,6 +15,7 @@ const Perfil = () => {
 				justifyContent: "center",
 				alignItems: "center",
 				backgroundColor: "#FFF",
+				paddingBottom: 40,
 			}}>
 			<View style={{ flex: 1, width: "100%", alignItems: "center", justifyContent: "center" }}>
 				<Text style={styles.heading_primary}>Pepe Argento</Text>
