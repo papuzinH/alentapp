@@ -3,16 +3,17 @@ import { View } from "react-native";
 
 interface BarProgressProps {
 	points: number;
-	total: number;
+	minPoints: number;
+	maxPoints: number;
 }
 
-const BarProgress: React.FC<BarProgressProps> = ({ points, total }) => {
+const BarProgress: React.FC<BarProgressProps> = ({ points, minPoints, maxPoints }) => {
 	const [barWidth, setBarWidth] = useState(0);
 
 	useEffect(() => {
-		let progress = (points / total) * 100;
+		let progress = ((points-minPoints) / (maxPoints-minPoints)) * 100;
 		setBarWidth(progress);
-	}, [points, total]);
+	}, [points, maxPoints]);
 
 	return (
 		<View style={{ position: "relative", marginVertical: 5 }}>

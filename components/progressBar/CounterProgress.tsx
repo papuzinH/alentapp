@@ -3,17 +3,19 @@ import { View, Text } from "react-native";
 import styles from "@/app/styles/generalStyles";
 
 interface CounterProgressProps {
-    counterLimits: {
-        init: number;
-        end: number;
-    };
+	points: number;
+	maxPoints: number;
 }
 
-const CounterProgress:React.FC<CounterProgressProps> = ({counterLimits}) => {
-    const {init, end} = counterLimits;
-    return (
-            <Text style={styles.heading_subtitle}>{init} puntos / {end} puntos</Text>
-    );
-}
+const CounterProgress: React.FC<CounterProgressProps> = ({
+    points,
+	maxPoints,
+}) => {
+	return (
+		<Text style={styles.heading_subtitle}>
+			{points} puntos / {maxPoints} puntos
+		</Text>
+	);
+};
 
 export default CounterProgress;

@@ -6,9 +6,10 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 interface ItemFooterRoundProps {
 	icon: string;
 	onPress: () => void;
+	isActive?: boolean;
 }
 
-const ItemFooterRound: React.FC<ItemFooterRoundProps> = ({ icon, onPress }) => {
+const ItemFooterRound: React.FC<ItemFooterRoundProps> = ({ icon, onPress, isActive }) => {
 	return (
 		<TouchableOpacity
 			style={{
@@ -19,7 +20,7 @@ const ItemFooterRound: React.FC<ItemFooterRoundProps> = ({ icon, onPress }) => {
 				height: 60,
 				borderRadius: 50,
 				position: "absolute",
-				backgroundColor: "#FFF",
+				backgroundColor:  isActive ? "#BCE0FD" : "#FFF",
 				justifyContent: "center",
 				alignItems: "center",
 				// Sombra para iOS
@@ -34,7 +35,7 @@ const ItemFooterRound: React.FC<ItemFooterRoundProps> = ({ icon, onPress }) => {
 			<Icon
 				name={icon}
 				size={24}
-				color="#2699FB"
+				color={!isActive ? "#2699FB" : "#FFF"}
 				style={{ textAlign: "center" }}
 			/>
 		</TouchableOpacity>

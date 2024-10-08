@@ -4,7 +4,6 @@ import styles from "@/app/styles/generalStyles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import MisionesIcon from "@/components/misionesSection/MisionesIcon";
-import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
 interface MisionItemProps {
 	title: string;
