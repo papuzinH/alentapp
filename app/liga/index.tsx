@@ -1,102 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
-import Icon from "react-native-vector-icons/MaterialIcons";
+import React, { useState, useEffect, useContext } from "react";
+import { View } from "react-native";
+import { AppContext } from "@/context/alentAppContext";
 
 import TablePointsCointainer from "@/components/tablePoints/TablePointsCointainer";
 import PodiumContainer from "@/components/podium/PodiumContainer";
 
 const Liga = () => {
-	const [users, setUsers] = useState([
-		{
-			name: "Lucas Pérez",
-			points: 120,
-			position: 1,
-			active: false,
-		},
-		{
-			name: "María Rodríguez",
-			points: 110,
-			position: 2,
-			active: false,
-		},
-		{
-			name: "Joaquín Gómez",
-			points: 105,
-			position: 3,
-			active: false,
-		},
-		{
-			name: "Sofía Sánchez",
-			points: 95,
-			position: 4,
-			active: false,
-		},
-		{
-			name: "Martín Fernández",
-			points: 85,
-			position: 5,
-			active: false,
-		},
-		{
-			name: "Pepe Argento",
-			points: 75,
-			position: 6,
-			active: true,
-		},
-		{
-			name: "Matías Ramírez",
-			points: 65,
-			position: 7,
-			active: false,
-		},
-		{
-			name: "Julieta Torres",
-			points: 55,
-			position: 8,
-			active: false,
-		},
-		{
-			name: "Alejandro Álvarez",
-			points: 45,
-			position: 9,
-			active: false,
-		},
-		{
-			name: "Valentina Díaz",
-			points: 35,
-			position: 10,
-			active: false,
-		},
-	]);
-	const [usersCopy, setUsersCopy] = useState<
-		{ name: string; points: number; position: number; active: boolean }[]
-	>([]);
-
-	const [topThreeUsers, setTopThreeUsers] = useState<
-		{ name: string; points: number; position: number }[]
-	>([]);
-
-	useEffect(() => {
-		const topThree = users.splice(0, 3);
-		setTopThreeUsers(topThree);
-	}, []);
-
-	useEffect(() => {
-		setUsersCopy([...users]);
-	}, [users]);
+	const { otherUsers, topThreeUsers } = useContext(AppContext);
 
 	return (
-		<View
-			style={{
-				flex: 1,
-				justifyContent: "center",
-				alignItems: "center",
-				backgroundColor: "#FFF",
-			}}>
-			<PodiumContainer podium={topThreeUsers} />
-			{usersCopy.length !== 0 && <TablePointsCointainer users={usersCopy} />}
-		</View>
-	);
+		(topThreeUsers.length !== 0 || otherUsers.length !== 0) && 
+			<View
+				style={{
+					flex: 1,
+					justifyContent: "center",
+					alignItems: "center",
+					backgroundColor: "#FFF",
+				}}>
+				<PodiumContainer podium={topThreeUsers} />
+				<TablePointsCointainer users={otherUsers} />
+			</View>
+		)
+	;
 };
 
 export default Liga;

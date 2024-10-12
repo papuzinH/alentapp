@@ -4,7 +4,7 @@ import MisionItem from "@/components/misionItem/MisionItem";
 import { AppContext } from "@/context/alentAppContext";
 
 const Misiones = () => {
-	const { misiones, user, ranks } = useContext(AppContext);
+	const { misiones, user } = useContext(AppContext);
 
 	return (
 		<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>

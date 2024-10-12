@@ -6,10 +6,11 @@ import styles from "@/app/styles/generalStyles";
 
 interface CounterPartidoProps {
 	isValidate: boolean,
-    partidoStarted: boolean
+    partidoStarted: boolean,
+	timeForStart: string,
 }
 
-const CounterPartido: FC<CounterPartidoProps> = ({partidoStarted, isValidate}) => {
+const CounterPartido: FC<CounterPartidoProps> = ({partidoStarted, isValidate, timeForStart}) => {
 	return (
 		<View
 			style={{
@@ -26,7 +27,7 @@ const CounterPartido: FC<CounterPartidoProps> = ({partidoStarted, isValidate}) =
 				{partidoStarted ? "¡Comenzó el partido!" : "Próximo partido dentro de:"}
 			</Text>
 			<Text style={{ fontSize: 40, color: "#2699FB", textAlign: "center" }}>
-				00:00:00
+				{timeForStart}
 			</Text>
 			{isValidate && (
 				<View

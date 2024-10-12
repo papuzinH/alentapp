@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { View, Text } from "react-native";
 import styles from "../styles/generalStyles";
 
@@ -10,11 +10,8 @@ import MisionesSectionContainer from "@/components/misionesSection/MisionesSecti
 import { AppContext } from "@/context/alentAppContext";
 
 const Perfil = () => {
-
 	const { user, ranks } = useContext(AppContext);
 	const rank = ranks.find((rank) => rank.name === user.rank);
-
-	console.log(rank)
 
 	return (
 		<View
@@ -25,14 +22,30 @@ const Perfil = () => {
 				backgroundColor: "#FFF",
 				paddingBottom: 40,
 			}}>
-			<View style={{ flex: 1, width: "100%", alignItems: "center", justifyContent: "center" }}>
-				<Text style={styles.heading_primary}>{user.username}</Text>
-				<Text style={styles.heading_subtitle}>{user.rank}</Text>
-				<PositionBarContainer />
-				<ProgressBarContainer minPoints={rank?.minPoints} maxPoints={rank?.maxPoints} points={user?.points} ranks={ranks} userRank={rank} />
-				<MisionesSectionContainer />
-			</View>
-			<ButtonPrimary title="Editar Avatar" onPress={() => {}} />
+			{rank && (
+				<>
+					<View
+						style={{
+							flex: 1,
+							width: "100%",
+							alignItems: "center",
+							justifyContent: "center",
+						}}>
+						<Text style={styles.heading_primary}>{user.username}</Text>
+						<Text style={styles.heading_subtitle}>{user.rank}</Text>
+						<PositionBarContainer />
+						<ProgressBarContainer
+							minPoints={rank?.minPoints}
+							maxPoints={rank?.maxPoints}
+							points={user?.points}
+							ranks={ranks}
+							userRank={rank}
+						/>
+						<MisionesSectionContainer />
+					</View>
+					<ButtonPrimary title="Editar Avatar" onPress={() => {}} />
+				</>
+			)}
 		</View>
 	);
 };

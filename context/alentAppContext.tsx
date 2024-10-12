@@ -1,4 +1,4 @@
-import React, { createContext, useState, useMemo, FC } from "react";
+import React, { createContext, useState, useMemo, FC, useEffect } from "react";
 
 interface AppProviderProps {
 	children: React.ReactNode;
@@ -9,7 +9,7 @@ interface User {
 	points: number;
 	coins: number;
 	rank: string;
-    position: number;
+	position: number;
 	misionesCompletadas: number[];
 }
 
@@ -22,19 +22,34 @@ interface Mision {
 }
 
 interface MatchData {
-	nextMatchIn: number;
+	dateHourMatch: string | number | Date;
+	nameMatch: string;
+	nextMatchInSeconds: number;
+	matchDate: string;
+	matchLocation: {
+		latitude: number;
+		longitude: number;
+	};
 }
 
 interface OtherUser {
 	name: string;
-	score: number;
+	points: number;
+	position: number;
+	active: boolean;
 }
 
 interface Ranks {
-    id: number;
-    name: string;
-    minPoints: number;
-    maxPoints: number;
+	id: number;
+	name: string;
+	minPoints: number;
+	maxPoints: number;
+}
+
+interface TopThreeUsers {
+	name: string;
+	points: number;
+	position: number;
 }
 
 interface AppContextProps {
@@ -46,8 +61,12 @@ interface AppContextProps {
 	setMatchData: React.Dispatch<React.SetStateAction<MatchData>>;
 	otherUsers: OtherUser[];
 	setOtherUsers: React.Dispatch<React.SetStateAction<OtherUser[]>>;
-    ranks: Ranks[];
-    setRanks: React.Dispatch<React.SetStateAction<Ranks[]>>;
+	ranks: Ranks[];
+	setRanks: React.Dispatch<React.SetStateAction<Ranks[]>>;
+	topThreeUsers: TopThreeUsers[];
+	setTopThreeUsers: React.Dispatch<React.SetStateAction<TopThreeUsers[]>>;
+	validLocation: boolean;
+	setValidLocation: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const AppContext = createContext<AppContextProps>({
@@ -56,20 +75,38 @@ export const AppContext = createContext<AppContextProps>({
 		points: 0,
 		coins: 0,
 		rank: "",
-        position: 0,
+		position: 0,
 		misionesCompletadas: [],
 	},
 	setUser: () => {},
 	misiones: [],
 	setMisiones: () => {},
 	matchData: {
-		nextMatchIn: 0,
+		nameMatch: "",
+		nextMatchInSeconds: 0,
+		matchDate: "",
+		dateHourMatch: "",
+		matchLocation: {
+			latitude: 0,
+			longitude: 0,
+		},
 	},
 	setMatchData: () => {},
-	otherUsers: [],
+	otherUsers: [
+		{
+			name: "",
+			points: 0,
+			position: 0,
+			active: false,
+		},
+	],
 	setOtherUsers: () => {},
-    ranks: [],
-    setRanks: () => {},
+	ranks: [],
+	setRanks: () => {},
+	topThreeUsers: [],
+	setTopThreeUsers: () => {},
+	validLocation: false,
+	setValidLocation: () => {},
 });
 
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
@@ -78,7 +115,7 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 		points: 58,
 		coins: 50,
 		rank: "Hincha",
-        position: 97,
+		position: 97,
 		misionesCompletadas: [1, 2],
 	});
 
@@ -154,13 +191,88 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 	]);
 
 	const [matchData, setMatchData] = useState({
-		nextMatchIn: 3600, // Tiempo en segundos hasta el próximo partido
+		nameMatch: "River vs Boca",
+		dateHourMatch: "2024-10-12T14:52:00",
+		nextMatchInSeconds: 10000,
+		matchLocation: {
+			latitude: -34.60696684910933,
+			longitude: -58.45704009925397,
+		},
 	});
 
 	const [otherUsers, setOtherUsers] = useState([
-		{ name: "Alice", score: 120 },
-		{ name: "Bob", score: 90 },
+		{
+			name: "Lucas Pérez",
+			points: 120,
+			position: 1,
+			active: false,
+		},
+		{
+			name: "María Rodríguez",
+			points: 110,
+			position: 2,
+			active: false,
+		},
+		{
+			name: "Joaquín Gómez",
+			points: 105,
+			position: 3,
+			active: false,
+		},
+		{
+			name: "Sofía Sánchez",
+			points: 95,
+			position: 4,
+			active: false,
+		},
+		{
+			name: "Martín Fernández",
+			points: 85,
+			position: 5,
+			active: false,
+		},
+		{
+			name: "Pepe Argento",
+			points: 75,
+			position: 6,
+			active: true,
+		},
+		{
+			name: "Matías Ramírez",
+			points: 65,
+			position: 7,
+			active: false,
+		},
+		{
+			name: "Julieta Torres",
+			points: 55,
+			position: 8,
+			active: false,
+		},
+		{
+			name: "Alejandro Álvarez",
+			points: 45,
+			position: 9,
+			active: false,
+		},
+		{
+			name: "Valentina Díaz",
+			points: 35,
+			position: 10,
+			active: false,
+		},
 	]);
+
+	const [topThreeUsers, setTopThreeUsers] = useState<
+		{ name: string; points: number; position: number }[]
+	>([]);
+
+	const [validLocation, setValidLocation] = useState(false);
+
+	useEffect(() => {
+		const topThree = otherUsers.splice(0, 3);
+		setTopThreeUsers(topThree);
+	}, [otherUsers]);
 
 	// Memorizar los valores para evitar re-renderizados innecesarios
 	const value = useMemo(
@@ -173,10 +285,14 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 			setMatchData,
 			otherUsers,
 			setOtherUsers,
-            ranks,
-            setRanks
+			topThreeUsers,
+			setTopThreeUsers,
+			ranks,
+			setRanks,
+			validLocation,
+			setValidLocation
 		}),
-		[user, misiones, matchData, otherUsers]
+		[user, misiones, matchData, otherUsers, topThreeUsers, ranks]
 	);
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
