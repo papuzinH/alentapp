@@ -18,8 +18,11 @@ const Partido = () => {
 	//refrescar el tiempo cada segundo
 	useEffect(() => {
 		const interval = setInterval(() => {
-			const now = new Date().getTime(); // Fecha y hora actual en milisegundos
-			const matchDate = new Date(matchData.dateHourMatch).getTime(); // Fecha y hora del partido en milisegundos
+			// Obtener la fecha y hora actual según el sistema local
+			const now = new Date().getTime(); // Esto ya da la hora local del sistema
+
+			// Asegúrate de que matchData.dateHourMatch esté en el formato "YYYY-MM-DDTHH:MM:SS"
+			const matchDate = new Date(matchData.dateHourMatch).getTime(); // Convertido a la zona horaria del sistema
 
 			const diff = matchDate - now; // Diferencia en milisegundos
 
@@ -59,66 +62,70 @@ const Partido = () => {
 		setValidating(false);
 	};
 
-	const handleValidate = () => {
-		setIsValidate(true);
+	const handleValidate = (param: boolean) => {
+		setIsValidate(param);
 	};
 
 	return (
-		timeForStart == "" && (
-			<View
-				style={{
-					flex: 1,
-					justifyContent: "center",
-					alignItems: "center",
-					backgroundColor: "#FFF",
-					paddingBottom: 40,
-				}}>
-				{validating ? (
-					<ValidatePresencia isValidate={isValidate} handleValidate={handleValidate} matchLocation={matchData.matchLocation} />
-				) : (
-					<CounterPartido
-						partidoStarted={partidoStarted}
-						isValidate={isValidate}
-						timeForStart={timeForStart}
-					/>
-				)}
+		<View
+			style={{
+				flex: 1,
+				justifyContent: "center",
+				alignItems: "center",
+				backgroundColor: "#FFF",
+				paddingBottom: 40,
+			}}>
+			{validating ? (
+				<ValidatePresencia
+					isValidate={isValidate}
+					handleValidate={handleValidate}
+					matchLocation={matchData.matchLocation}
+				/>
+			) : (
+				<CounterPartido
+					partidoStarted={partidoStarted}
+					isValidate={isValidate}
+					timeForStart={timeForStart}
+				/>
+			)}
 
-				<View>
-					{validating ? (
-						isValidate ? (
-							<ButtonPrimary
-								title="Confirmar"
-								onPress={() => {
-									stopValidating();
-								}}
-							/>
-						) : (
-							<ButtonPrimary
-								title="Cancelar"
-								onPress={() => {}}
-								type="secondary"
-							/>
-						)
-					) : !isValidate ? (
+			<View>
+				{validating ? (
+					isValidate ? (
 						<ButtonPrimary
-							title="Validar Presencia"
+							title="Confirmar"
 							onPress={() => {
-								startValidating();
+								stopValidating();
 							}}
 						/>
 					) : (
-						partidoStarted && (
-							<ButtonPrimary
-								title="Ir al Partido"
-								onPress={() => {
-									navigate("partido/live");
-								}}
-							/>
-						)
-					)}
-				</View>
+						<ButtonPrimary
+							title="Cancelar"
+							onPress={() => {
+								stopValidating();
+							}}
+							type="secondary"
+						/>
+					)
+				) : !isValidate ? (
+					<ButtonPrimary
+						title="Validar Presencia"
+						onPress={() => {
+							startValidating();
+						}}
+					/>
+				) : (
+					partidoStarted && (
+						<ButtonPrimary
+							title="Ir al Partido"
+							onPress={() => {
+								navigate("partido/live");
+							}}
+						/>
+					)
+				)}
 			</View>
-		)
+		</View>
 	);
 };
 

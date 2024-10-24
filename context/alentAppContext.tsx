@@ -52,6 +52,12 @@ interface TopThreeUsers {
 	position: number;
 }
 
+interface Accion {
+	accion: string;
+	fechaInicio: string;
+	fechaFin: string;
+}
+
 interface AppContextProps {
 	user: User;
 	setUser: React.Dispatch<React.SetStateAction<User>>;
@@ -67,6 +73,8 @@ interface AppContextProps {
 	setTopThreeUsers: React.Dispatch<React.SetStateAction<TopThreeUsers[]>>;
 	validLocation: boolean;
 	setValidLocation: React.Dispatch<React.SetStateAction<boolean>>;
+	acciones: Accion[];
+	setAcciones: React.Dispatch<React.SetStateAction<Accion[]>>;
 }
 
 export const AppContext = createContext<AppContextProps>({
@@ -107,6 +115,8 @@ export const AppContext = createContext<AppContextProps>({
 	setTopThreeUsers: () => {},
 	validLocation: false,
 	setValidLocation: () => {},
+	acciones: [],
+	setAcciones: () => {},
 });
 
 export const AppProvider: FC<AppProviderProps> = ({ children }) => {
@@ -118,6 +128,23 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 		position: 97,
 		misionesCompletadas: [1, 2],
 	});
+
+	const [acciones, setAcciones] = useState<Accion[]>([{
+		accion: "salto",
+		fechaInicio: "2024-10-15T18:00:00",
+		fechaFin: "2024-10-15T18:00:20",
+	},
+	
+	{
+		accion: "correr",
+		fechaInicio: "2024-10-15T18:00:20",
+		fechaFin: "2024-10-15T18:00:40",
+	},]);
+
+	// Función para añadir una nueva acción
+	const agregarAccion = (nuevaAccion: Accion) => {
+		setAcciones((prevAcciones: Accion[]) => [...prevAcciones, nuevaAccion]);
+	};
 
 	const [misiones, setMisiones] = useState([
 		{
@@ -192,11 +219,11 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 
 	const [matchData, setMatchData] = useState({
 		nameMatch: "River vs Boca",
-		dateHourMatch: "2024-10-12T14:52:00",
+		dateHourMatch: "2024-10-15T18:00:00",
 		nextMatchInSeconds: 10000,
 		matchLocation: {
-			latitude: -34.60696684910933,
-			longitude: -58.45704009925397,
+			latitude: -35.58441191085868,
+			longitude: -57.991366030851424,
 		},
 	});
 
@@ -290,9 +317,11 @@ export const AppProvider: FC<AppProviderProps> = ({ children }) => {
 			ranks,
 			setRanks,
 			validLocation,
-			setValidLocation
+			setValidLocation,
+			acciones,
+			setAcciones,
 		}),
-		[user, misiones, matchData, otherUsers, topThreeUsers, ranks]
+		[user, misiones, matchData, otherUsers, topThreeUsers, ranks, validLocation, acciones]
 	);
 
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

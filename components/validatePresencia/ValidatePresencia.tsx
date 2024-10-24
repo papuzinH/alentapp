@@ -12,7 +12,7 @@ interface ValidatePresenciaProps {
 		latitude: number;
 		longitude: number;
 	};
-	handleValidate: () => void;
+	handleValidate: (param: boolean) => void;
 }
 
 const ValidatePresencia: FC<ValidatePresenciaProps> = ({
@@ -22,6 +22,7 @@ const ValidatePresencia: FC<ValidatePresenciaProps> = ({
 }) => {
 	const [location, setLocation] = useState(null);
 	const [errorMsg, setErrorMsg] = useState(null);
+	const [validating, setValidating] = useState(true);
 
 	useEffect(() => {
 		(async () => {
@@ -63,18 +64,21 @@ const ValidatePresencia: FC<ValidatePresenciaProps> = ({
 
 			const distance = earthRadius * c; // Distancia en metros
 
-			// Si la distancia es menor a 100 metros, valida la presencia
-			if (distance < 100) {
-				setTimeout(() => {
+			// Si la distancia es menor a 100 metros, valida la presencia. Sinó,
+			setTimeout(() => {
+				if (distance < 100) {
 					console.log("está");
-					handleValidate();
-				}, 3000);
-			}
-			
+					handleValidate(true);
+				} else {
+					console.log("no está");
+					handleValidate(false);
+				}
+				setValidating(false);
+			}, 3000);
+
 			console.log("Coordenadas actuales: ", latitude, longitude);
 			console.log("Coordenadas del estadio: ", matchLatitude, matchLongitude);
 			console.log("Distancia: ", distance);
-
 		}
 	}, [location]);
 
@@ -86,19 +90,24 @@ const ValidatePresencia: FC<ValidatePresenciaProps> = ({
 				gap: 25,
 				flex: 1,
 			}}>
-			{isValidate ? (
+			{validating ? (
+				<Icon name="add-location-alt" size={100} color="#2699FB" />
+			) : isValidate ? (
 				<Icon name="check-circle-outline" size={100} color="#2699FB" />
 			) : (
-				<Icon name="add-location-alt" size={100} color="#2699FB" />
+				<Icon name="cancel" size={100} color="#2699FB" />
 			)}
+
 			<Text
 				style={[
 					styles.heading_primary,
 					{ fontWeight: "normal", textAlign: "center" },
 				]}>
-				{isValidate
-					? "Presencia validada"
-					: "Validando presencia en el estadio..."}
+				{validating
+					? "Validando presencia"
+					: isValidate
+					? "¡Estás en el estadio!"
+					: "No estás en el estadio"}
 			</Text>
 			{isValidate && (
 				<Text

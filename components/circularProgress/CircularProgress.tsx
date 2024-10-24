@@ -10,47 +10,32 @@ interface CircularProgressProps {
   strokeWidth?: number; // Ancho del borde
   duration?: number;  // Duración de la animación en milisegundos
   max?: number;       // Máximo del "progreso" (por ejemplo, 60 para 60 segundos)
+  elapsedTime: number; // Tiempo transcurrido en segundos
 }
 
 const CircularProgress: React.FC<CircularProgressProps> = ({
   size = 200,
   strokeWidth = 10,
   duration = 60000, // 1 minuto por defecto
-  max = 60,         // 60 segundos
+  elapsedTime = 0,  // Tiempo transcurrido en segundos
+  max = 5400,       // 90 minutos (5400 segundos)
 }) => {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const animatedValue = useRef(new Animated.Value(0)).current;
-  const [elapsedTime, setElapsedTime] = useState(0);
 
-  // Función para formatear el tiempo en MM:SS
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
-  };
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  }
+  
+  // Limitar el tiempo transcurrido a 90 minutos (5400 segundos) para que el círculo no siga llenándose
+  const limitedElapsedTime = elapsedTime > max ? max : elapsedTime;
+  
+  // Calcular el porcentaje del círculo completado
+  const progress = limitedElapsedTime / max; // Progreso del partido (0 a 1)
 
-  // Animar el círculo desde 0 hasta 100%
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: 1,
-      duration: duration, // Duración de la animación
-      useNativeDriver: true,
-    }).start();
-
-    // Actualizar el tiempo transcurrido
-    const interval = setInterval(() => {
-      setElapsedTime((prev) => prev + 1);
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [animatedValue, duration]);
-
-  // Calcular la longitud de trazo a medida que avanza la animación
-  const strokeDashoffset = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [circumference, 0],
-  });
+  const strokeDashoffset = circumference - (circumference * progress);
 
   return (
     <View style={styles.container}>
@@ -87,6 +72,7 @@ const CircularProgress: React.FC<CircularProgressProps> = ({
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
